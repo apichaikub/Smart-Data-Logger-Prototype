@@ -1,0 +1,77 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>GET DEVICE DATA</title>
+
+<script src="js/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		
+		$('#get-data').click(function(){
+			
+			var keyId = 'QZCtssm2';
+			var endpointId = document.getElementById('endpoint').value;
+			
+			clear_data();
+			
+			get_data(keyId, endpointId, 100);
+			
+		});
+        
+		function get_data (keyId ,endpointId, maxResults) {
+			$.ajax({
+				url: "http://airbean.net/topgun_airbean/api/get_device_data",
+				type:'get',
+				dataType: 'json',
+				data: {
+					key: keyId,
+					endpoint: endpointId,
+					number: maxResults
+				},
+				success: function(data) {
+					
+					if(data.code == 0) {
+						
+						var html = '';
+						
+						for(var i=0; i < data.device_data.length; i++) {
+							html +=	'<tr class="data">';
+							html +=		'<td align="center">'+ (i+1) +'</td>';
+							html +=		'<td align="center">'+ data.device_data[i] +'</td>';
+							html +=	'</tr>';
+						}
+						
+						$("table").append(html);
+					}
+				}
+			});
+		}
+		
+		function clear_data () {
+			$('.data').remove();
+		}
+		
+    });
+</script>
+
+</head>
+
+<body>
+
+<h2>Airbean API : Get Device Data</h2>
+
+<p>
+	<input type="text" id="endpoint" placeholder="ENDPOINT">
+    <button id="get-data">Get Data</button> 
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+        <td align="center"><b>No</b></td>
+        <td align="center"><b>device data</b></td>
+    </tr>
+</table>
+
+</body>
+</html>

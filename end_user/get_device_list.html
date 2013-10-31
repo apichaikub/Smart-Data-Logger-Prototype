@@ -1,0 +1,67 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>GET DEVICE LIST</title>
+
+<script src="js/jquery.min.js"></script>
+<script>
+	function get_data(keyId) {
+		$.ajax({
+			url: "http://airbean.net/topgun_airbean/api/get_device_list",
+			type:'get',
+			dataType: 'json',
+			data: {
+				key: keyId
+			},
+			success: function(data) {
+				
+				if(data.code == 0) {
+					
+					var html = '';
+					
+					for(var i=0; i < data.device_list.length; i++) {
+						html +=	'<tr>';
+						html +=		'<td align="center">'+ data.device_list[i].device_id +'</td>';
+						html +=		'<td align="center">'+ data.device_list[i].device_name +'</td>';
+						html +=		'<td align="center">'+ data.device_list[i].type +'</td>';
+						html +=		'<td align="center">'+ data.device_list[i].type_name +'</td>';
+						html +=		'<td align="center">'+ data.device_list[i].endpoint +'</td>';
+						html +=	'</tr>';
+					}
+					
+					$("table").append(html);
+				}
+			}
+		});
+	}
+	
+	$(document).ready(function() {
+		
+		var keyId = 'QZCtssm2';
+		
+		get_data(keyId);
+		
+    });
+</script>
+
+</head>
+
+<body>
+
+<h2>Airbean API : Get Device List</h2>
+
+<div>
+	<table border="1" cellpadding="2" cellspacing="0" width="100%">
+    	<tr>
+        	<td align="center"><b>device id</b></td>
+            <td align="center"><b>device name</b></td>
+            <td align="center"><b>type</b></td>
+            <td align="center"><b>type name</b></td>
+            <td align="center"><b>endpoint</b></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
